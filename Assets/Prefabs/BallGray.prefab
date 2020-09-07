@@ -84,7 +84,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BallGray
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 436968509909155127, guid: ba3e59a87158b3d4cb4ab741ae3382e8, type: 3}
+    - {fileID: 3997797340257561621, guid: ba3e59a87158b3d4cb4ab741ae3382e8, type: 3}
+    - {fileID: 1346112468384378915, guid: ba3e59a87158b3d4cb4ab741ae3382e8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ba3e59a87158b3d4cb4ab741ae3382e8, type: 3}
 --- !u!1 &6535986887654978950 stripped
 GameObject:
