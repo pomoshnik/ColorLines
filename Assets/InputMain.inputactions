@@ -1,0 +1,33 @@
+{
+    "name": "InputMain",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "61309b02-31cc-4129-be70-08ec3ee7a839",
+            "actions": [
+                {
+                    "name": "Exit",
+                    "type": "Button",
+                    "id": "b45a9e1c-2366-4296-93d7-ae4f0175a207",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c3324e37-d374-4eda-a327-612665880a44",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Exit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
