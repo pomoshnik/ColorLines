@@ -19,9 +19,7 @@ public class ball : MonoBehaviour
     void OnMouseDown()
     {
         Debug.Log("Hit");
-        var comp = GetComponent<Rigidbody>();
-        comp.isKinematic = false;
-        comp.AddForce(new Vector3(0, 0, -5), ForceMode.Impulse);
+        
         
     }
 

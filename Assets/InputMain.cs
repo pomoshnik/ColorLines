@@ -32,7 +32,7 @@ public class @InputMain : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""c3324e37-d374-4eda-a327-612665880a44"",
                     ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": ""Press"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Exit"",

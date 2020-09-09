@@ -34,11 +34,24 @@ public class Main : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (input.Player.Exit.ReadValue<float>()!=0)
+        Ray MyRay;
+        RaycastHit hit=new RaycastHit();
+
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_EDITOR
+
+        if (Mouse.current.leftButton.ReadValue()!=0)
         {
-            Application.Quit();
-            return;
+            var mousePosition = Mouse.current.position.ReadValue();
+            MyRay = Camera.main.ScreenPointToRay(mousePosition);
+            Debug.DrawRay(MyRay.origin, MyRay.direction * 40, Color.yellow);
+            if (Physics.Raycast(MyRay.origin, MyRay.direction, out hit, 100))
+            {
+                Debug.Log("Ball");
+            }
         }
+
+#elif UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
+#endif
     }
 
     void StartTable() 
