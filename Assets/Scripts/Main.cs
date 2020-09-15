@@ -45,7 +45,7 @@ public class Main : MonoBehaviour
         Ray MyRay;
         RaycastHit hit=new RaycastHit();
 
-#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_EDITOR
+#if UNITY_STANDALONE || UNITY_WEBPLAYER
 
         if (Mouse.current.leftButton.ReadValue()!=0)
         {
@@ -71,7 +71,32 @@ public class Main : MonoBehaviour
             }
         }
 
-#elif UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
+#elif UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE || UNITY_EDITOR
+
+        if (Touchscreen.current.IsPressed(0))
+	{
+            var position = Touchscreen.current.position.ReadValue();
+            MyRay = Camera.main.ScreenPointToRay(position);
+            Debug.DrawRay(MyRay.origin, MyRay.direction * 21, Color.yellow);
+            if (Physics.Raycast(MyRay.origin, MyRay.direction, out hit, 21))
+            {
+                if (hit.collider.gameObject != selectBall)
+                {
+                    Debug.Log(hit.collider.gameObject.name);
+                    if (selectBall != null)
+                    {
+                        var animatorS = selectBall.GetComponent<Animator>();
+                        animatorS.SetTrigger("Stop");
+                    }
+
+                    selectBall = hit.collider.gameObject;
+                    var animator = selectBall.GetComponent<Animator>();
+                    animator.SetTrigger("Jump");
+                }
+
+            }
+        }
+
 #endif
     }
 
