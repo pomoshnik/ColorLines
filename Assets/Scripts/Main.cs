@@ -9,6 +9,8 @@ public class Main : MonoBehaviour
     private GameObject[,] pole=new GameObject[9, 9];
     public InputMain input;
 
+    private GameObject selectBall;
+
     void Awake()
     {
         input = new InputMain();
@@ -16,6 +18,12 @@ public class Main : MonoBehaviour
         input.Player.Exit.performed += _ => Exit();
         StartTable();
     }
+
+    void Start()
+    {
+
+    }
+    
     private void OnEnable()
     {
         input.Player.Enable();
@@ -43,10 +51,23 @@ public class Main : MonoBehaviour
         {
             var mousePosition = Mouse.current.position.ReadValue();
             MyRay = Camera.main.ScreenPointToRay(mousePosition);
-            Debug.DrawRay(MyRay.origin, MyRay.direction * 40, Color.yellow);
-            if (Physics.Raycast(MyRay.origin, MyRay.direction, out hit, 100))
+            Debug.DrawRay(MyRay.origin, MyRay.direction * 21, Color.yellow);
+            if (Physics.Raycast(MyRay.origin, MyRay.direction, out hit, 21))
             {
-                Debug.Log("Ball");
+                if (hit.collider.gameObject != selectBall)
+                {
+                    Debug.Log(hit.collider.gameObject.name);
+                    if (selectBall != null)
+                    {
+                        var animatorS = selectBall.GetComponent<Animator>();
+                        animatorS.SetTrigger("Stop");
+                    }
+
+                    selectBall = hit.collider.gameObject;
+                    var animator = selectBall.GetComponent<Animator>();
+                    animator.SetTrigger("Jump");
+                }
+
             }
         }
 
@@ -69,7 +90,7 @@ public class Main : MonoBehaviour
                 i--;
                 continue;
             }
-            var b = Instantiate(ball[c], new Vector3(x-4, y-4, -1f), Quaternion.identity);
+            var b = Instantiate(ball[c], new Vector3(x-4, y-4, 0f), Quaternion.identity);
             pole[x, y] = b;
         }
     }

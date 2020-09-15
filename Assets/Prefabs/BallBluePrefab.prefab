@@ -1,24 +1,48 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &2798916898055115821
-MonoBehaviour:
+--- !u!1 &7751508770230584736
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8379895614038711069}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16e20999b6c07a8419a34a3d555e4dda, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1001 &1956578534762067032
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4015861194681722607}
+  m_Layer: 0
+  m_Name: BallBluePrefab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4015861194681722607
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7751508770230584736}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 183768275309342743}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &7917494325134008151
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 4015861194681722607}
     m_Modifications:
+    - target: {fileID: -2962964323915333723, guid: 2d870a5e39b3d1b459143410b3c57035,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 7e3e23455b3e63e4e9e6237dc6f54518, type: 2}
     - target: {fileID: 8028923515833167680, guid: 2d870a5e39b3d1b459143410b3c57035,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -27,12 +51,12 @@ PrefabInstance:
     - target: {fileID: 8028923515833167680, guid: 2d870a5e39b3d1b459143410b3c57035,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8028923515833167680, guid: 2d870a5e39b3d1b459143410b3c57035,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.53
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8028923515833167680, guid: 2d870a5e39b3d1b459143410b3c57035,
         type: 3}
@@ -78,29 +102,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 9ce8cdf91f2dc474db082e60a69408de, type: 2}
-    - target: {fileID: 8028923515833167683, guid: 2d870a5e39b3d1b459143410b3c57035,
-        type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2100000, guid: f3e584debe12aea468ef1e35c8fb1258, type: 2}
     - target: {fileID: 8028923515833167685, guid: 2d870a5e39b3d1b459143410b3c57035,
         type: 3}
       propertyPath: m_Name
-      value: BallRed
+      value: BallGreen
       objectReference: {fileID: 0}
-    - target: {fileID: 8028923515833167685, guid: 2d870a5e39b3d1b459143410b3c57035,
-        type: 3}
-      propertyPath: m_TagString
-      value: Red
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 8028923515833167684, guid: 2d870a5e39b3d1b459143410b3c57035, type: 3}
-    - {fileID: 8028923515833167683, guid: 2d870a5e39b3d1b459143410b3c57035, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d870a5e39b3d1b459143410b3c57035, type: 3}
---- !u!1 &8379895614038711069 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8028923515833167685, guid: 2d870a5e39b3d1b459143410b3c57035,
+--- !u!4 &183768275309342743 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8028923515833167680, guid: 2d870a5e39b3d1b459143410b3c57035,
     type: 3}
-  m_PrefabInstance: {fileID: 1956578534762067032}
+  m_PrefabInstance: {fileID: 7917494325134008151}
   m_PrefabAsset: {fileID: 0}
