@@ -10,6 +10,8 @@ TagManager:
   - Yellow
   - Purple
   - Gray
+  - Cell
+  - Ball
   layers:
   - Default
   - TransparentFX
