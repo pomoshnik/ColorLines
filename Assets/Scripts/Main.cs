@@ -45,8 +45,8 @@ public class Main : MonoBehaviour
         Ray MyRay;
         RaycastHit hit = new RaycastHit();
         Vector2 position=new Vector2();
-        
-#if UNITY_STANDALONE || UNITY_WEBPLAYER
+
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_EDITOR
 
         if (Mouse.current.leftButton.ReadValue() != 0)
         {
@@ -54,7 +54,7 @@ public class Main : MonoBehaviour
 
         }
 
-#elif UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE || UNITY_EDITOR
+#elif UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE 
 
         if (Touchscreen.current.IsPressed(0))
 	    {
