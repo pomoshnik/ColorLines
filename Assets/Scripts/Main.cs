@@ -7,6 +7,7 @@ public class Main : MonoBehaviour
 {
     public GameObject[] ball = new GameObject[3];
     private GameObject[,] pole = new GameObject[9, 9];
+    private Vector2[] path = new Vector2[50];
     public InputMain input;
 
     private GameObject selectBall;
@@ -84,6 +85,11 @@ public class Main : MonoBehaviour
 
             }
         }
+    }
+
+    bool SearchPath(Vector2 start, Vector2 finish)
+    {
+        return true;
     }
 
     void StartTable()
