@@ -71,7 +71,7 @@ public class Main : MonoBehaviour
             {
                 if (hit.collider.gameObject.tag == "Ball" && hit.collider.gameObject != selectBall)
                 {
-                    Debug.Log(hit.collider.gameObject.name);
+                    Debug.Log("Выбрал шарик "+hit.collider.gameObject.transform.position.x+" "+hit.collider.gameObject.transform.position.y);
                     if (selectBall != null)
                     {
                         var animatorS = selectBall.GetComponent<Animator>();
@@ -82,7 +82,10 @@ public class Main : MonoBehaviour
                     var animator = selectBall.GetComponent<Animator>();
                     animator.SetTrigger("Jump");
                 }
-
+                if (hit.collider.gameObject.tag == "Cell" && selectBall!=null)
+                {
+                    Debug.Log("Куда пойдем " + hit.collider.gameObject.transform.position.x + " " + hit.collider.gameObject.transform.position.y);
+                }
             }
         }
     }
