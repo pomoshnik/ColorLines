@@ -8,6 +8,7 @@ public class Main : MonoBehaviour
     public GameObject[] ball = new GameObject[3];
     private GameObject[,] pole = new GameObject[9, 9];
     private Vector2[] path = new Vector2[50];
+    private int numPath = 0;
     public InputMain input;
 
     private GameObject selectBall;
@@ -85,6 +86,7 @@ public class Main : MonoBehaviour
                 if (hit.collider.gameObject.tag == "Cell" && selectBall!=null)
                 {
                     Debug.Log("Куда пойдем " + hit.collider.gameObject.transform.position.x + " " + hit.collider.gameObject.transform.position.y);
+                    var isHod = SearchPath(selectBall.transform.position, hit.collider.gameObject.transform.position);
                 }
             }
         }
@@ -92,7 +94,31 @@ public class Main : MonoBehaviour
 
     bool SearchPath(Vector2 start, Vector2 finish)
     {
-        return true;
+        if (start.x < 0 || start.x > 8 || start.y < 0 || start.y > 8)
+        {
+            return false;
+        }
+        path[numPath] = start;
+        numPath += 1;
+        if (start == finish)
+        {
+            return true;
+        }
+        else
+        {
+            if (pole[(int)start.x, (int)start.y] == null)
+            { return false; }
+            else
+            {
+                if (SearchPath(new Vector2(start.x + 1, start.y), finish)) return true;
+                if (SearchPath(new Vector2(start.x - 1, start.y), finish)) return true;
+                if (SearchPath(new Vector2(start.x, start.y + 1), finish)) return true;
+                if (SearchPath(new Vector2(start.x, start.y - 1), finish)) return true;
+            }
+        }
+        
+        
+        return false;
     }
 
     void StartTable()
@@ -110,7 +136,7 @@ public class Main : MonoBehaviour
                 i--;
                 continue;
             }
-            var b = Instantiate(ball[c], new Vector3(x - 4, y - 4, 0f), Quaternion.identity);
+            var b = Instantiate(ball[c], new Vector3(x , y , 0f), Quaternion.identity);
             pole[x, y] = b;
         }
     }
