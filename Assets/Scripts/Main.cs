@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class Main : MonoBehaviour
 {
     public GameObject[] ball = new GameObject[3];
-    private GameObject[,] pole = new GameObject[9, 9];
+    private int[,] pole = new int[9, 9];
     private Vector2[] path = new Vector2[50];
     private int numPath = 0;
     public InputMain input;
@@ -94,7 +94,7 @@ public class Main : MonoBehaviour
 
     bool SearchPath(Vector2 start, Vector2 finish)
     {
-        if (start.x < 0 || start.x > 8 || start.y < 0 || start.y > 8)
+        if (start.x < 0 || start.x > 8 || start.y < 0 || start.y > 8 || pole[(int)start.x, (int)start.y] != 0)
         {
             return false;
         }
@@ -106,18 +106,13 @@ public class Main : MonoBehaviour
         }
         else
         {
-            if (pole[(int)start.x, (int)start.y] == null)
-            { return false; }
-            else
-            {
-                if (SearchPath(new Vector2(start.x + 1, start.y), finish)) return true;
-                if (SearchPath(new Vector2(start.x - 1, start.y), finish)) return true;
-                if (SearchPath(new Vector2(start.x, start.y + 1), finish)) return true;
-                if (SearchPath(new Vector2(start.x, start.y - 1), finish)) return true;
-            }
+            if (SearchPath(new Vector2(start.x + 1, start.y), finish)) return true;
+            if (SearchPath(new Vector2(start.x - 1, start.y), finish)) return true;
+            if (SearchPath(new Vector2(start.x, start.y + 1), finish)) return true;
+            if (SearchPath(new Vector2(start.x, start.y - 1), finish)) return true;
         }
-        
-        
+
+        numPath -= 1;
         return false;
     }
 
@@ -131,13 +126,13 @@ public class Main : MonoBehaviour
             x = Random.Range(1, 9);
             y = Random.Range(1, 9);
             c = Random.Range(0, 4);
-            if (pole[x, y] != null)
+            if (pole[x, y] != 0)
             {
                 i--;
                 continue;
             }
             var b = Instantiate(ball[c], new Vector3(x , y , 0f), Quaternion.identity);
-            pole[x, y] = b;
+            pole[x, y] = c;
         }
     }
 }
