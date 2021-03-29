@@ -5,9 +5,9 @@ using UnityEngine.InputSystem;
 
 public class Main : MonoBehaviour
 {
-    public GameObject[] ball = new GameObject[3];
-    private int[,] pole = new int[9, 9];
-    private Vector2[] path = new Vector2[50];
+    public GameObject[] ball = new GameObject[6];
+    private readonly int[,] pole = new int[9, 9];
+    private readonly Vector2[] path = new Vector2[50];
     private int numPath = 0;
     public InputMain input;
 
@@ -70,7 +70,7 @@ public class Main : MonoBehaviour
             Debug.DrawRay(MyRay.origin, MyRay.direction * 21, Color.yellow);
             if (Physics.Raycast(MyRay.origin, MyRay.direction, out hit, 21))
             {
-                if (hit.collider.gameObject.tag == "Ball" && hit.collider.gameObject != selectBall)
+                if (hit.collider.gameObject.CompareTag("Ball") && hit.collider.gameObject != selectBall)
                 {
                     Debug.Log("Выбрал шарик "+hit.collider.gameObject.transform.position.x+" "+hit.collider.gameObject.transform.position.y);
                     if (selectBall != null)
@@ -83,7 +83,7 @@ public class Main : MonoBehaviour
                     var animator = selectBall.GetComponent<Animator>();
                     animator.SetTrigger("Jump");
                 }
-                if (hit.collider.gameObject.tag == "Cell" && selectBall!=null)
+                if (hit.collider.gameObject.CompareTag("Cell") && selectBall!=null)
                 {
                     Debug.Log("Куда пойдем " + hit.collider.gameObject.transform.position.x + " " + hit.collider.gameObject.transform.position.y);
                     var isHod = SearchPath(selectBall.transform.position, hit.collider.gameObject.transform.position);

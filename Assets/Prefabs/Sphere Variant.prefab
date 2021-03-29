@@ -7,10 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8028923515833167685, guid: 2d870a5e39b3d1b459143410b3c57035,
+    - target: {fileID: 8028923515833167680, guid: 2d870a5e39b3d1b459143410b3c57035,
         type: 3}
-      propertyPath: m_Name
-      value: Sphere
+      propertyPath: m_RootOrder
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8028923515833167680, guid: 2d870a5e39b3d1b459143410b3c57035,
         type: 3}
@@ -29,6 +29,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8028923515833167680, guid: 2d870a5e39b3d1b459143410b3c57035,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8028923515833167680, guid: 2d870a5e39b3d1b459143410b3c57035,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -40,16 +45,6 @@ PrefabInstance:
     - target: {fileID: 8028923515833167680, guid: 2d870a5e39b3d1b459143410b3c57035,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8028923515833167680, guid: 2d870a5e39b3d1b459143410b3c57035,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8028923515833167680, guid: 2d870a5e39b3d1b459143410b3c57035,
-        type: 3}
-      propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8028923515833167680, guid: 2d870a5e39b3d1b459143410b3c57035,
@@ -71,6 +66,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: f3e584debe12aea468ef1e35c8fb1258, type: 2}
-    m_RemovedComponents: []
+      objectReference: {fileID: 0}
+    - target: {fileID: 8028923515833167685, guid: 2d870a5e39b3d1b459143410b3c57035,
+        type: 3}
+      propertyPath: m_Name
+      value: Sphere Variant
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: -2962964323915333723, guid: 2d870a5e39b3d1b459143410b3c57035, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2d870a5e39b3d1b459143410b3c57035, type: 3}
