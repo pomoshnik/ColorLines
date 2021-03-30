@@ -87,6 +87,7 @@ public class Main : MonoBehaviour
                 {
                     Debug.Log("Куда пойдем " + hit.collider.gameObject.transform.position.x + " " + hit.collider.gameObject.transform.position.y);
                     var isHod = SearchPath(selectBall.transform.position, hit.collider.gameObject.transform.position);
+                    Debug.Log(isHod);
                 }
             }
         }

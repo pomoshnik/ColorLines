@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ball : MonoBehaviour
 {
+    public AudioClip ping;
+    public new AudioSource audio;
+    
     private bool start = true;
 
     void Update()
@@ -12,5 +15,11 @@ public class ball : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, transform.position.y, -3);
         }
+        
+    }
+
+    void PlaySound()
+    {
+        audio.PlayOneShot(ping);
     }
 }
