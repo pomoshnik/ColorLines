@@ -86,21 +86,55 @@ public class Main : MonoBehaviour
                 if (hit.collider.gameObject.CompareTag("Cell") && selectBall!=null)
                 {
                     Debug.Log("Куда пойдем " + hit.collider.gameObject.transform.position.x + " " + hit.collider.gameObject.transform.position.y);
-                    var isHod = SearchPath(selectBall.transform.position, hit.collider.gameObject.transform.position);
+                    var isHod = SearchPathStart(selectBall.transform.position, hit.collider.gameObject.transform.position);
+                    ClearPole99();
                     Debug.Log(isHod);
                 }
             }
         }
     }
 
+    private void ClearPole99()
+    {
+        for (int x = 0; x < 9; x++)
+        {
+            for (int y = 0; y < 9; y++)
+            {
+                if (pole[x, y] < 0)
+                {
+                    pole[x, y] = 0;
+                }
+            }
+        }
+    }
+
+    bool SearchPathStart(Vector2 start, Vector2 finish)
+    {
+        numPath = 0;
+        path[numPath] = start;
+        
+        if (SearchPath(new Vector2(start.x + 1, start.y), finish)) return true;
+        if (SearchPath(new Vector2(start.x - 1, start.y), finish)) return true;
+        if (SearchPath(new Vector2(start.x, start.y + 1), finish)) return true;
+        if (SearchPath(new Vector2(start.x, start.y - 1), finish)) return true;
+
+        return false;
+    }
+    
     bool SearchPath(Vector2 start, Vector2 finish)
     {
-        if (start.x < 0 || start.x > 8 || start.y < 0 || start.y > 8 || pole[(int)start.x, (int)start.y] != 0)
+        if (start.x < 0 || start.x > 8 || start.y < 0 || start.y > 8 || pole[(int)start.x, (int)start.y] > 0)
+        {
+            return false;
+        }
+
+        numPath += 1;
+        if ((pole[(int)start.x, (int)start.y]) >= -numPath && (pole[(int)start.x, (int)start.y] != 0))
         {
             return false;
         }
         path[numPath] = start;
-        numPath += 1;
+        pole[(int)start.x, (int)start.y] = -numPath;
         if (start == finish)
         {
             return true;
