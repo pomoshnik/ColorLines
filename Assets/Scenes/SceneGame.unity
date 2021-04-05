@@ -2185,6 +2185,7 @@ MonoBehaviour:
   - {fileID: 4349321672418824459, guid: 474af7e6df4ba1f4d857f4c238d29773, type: 3}
   - {fileID: 4349321672418824459, guid: 2603960fe2e7103419b445bc0a417afe, type: 3}
   - {fileID: 4349321672418824459, guid: 25c17618969d33045aa9919d9c1d06a2, type: 3}
+  metka: {fileID: 3032703000341925249, guid: b2b07847cf12e6d45821b75b78f41a68, type: 3}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
