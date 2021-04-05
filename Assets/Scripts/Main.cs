@@ -1,12 +1,19 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.VFX;
+using Random = UnityEngine.Random;
 
 public class Main : MonoBehaviour
 {
     public GameObject[] ball = new GameObject[6];
+    public GameObject metka;
+    
+    
     private readonly int[,] pole = new int[9, 9];
+    private readonly int[,] poleSP = new int[9, 9];
     private readonly Vector2[] path = new Vector2[50];
     private int numPath = 0;
     public InputMain input;
@@ -87,7 +94,7 @@ public class Main : MonoBehaviour
                 {
                     Debug.Log("Куда пойдем " + hit.collider.gameObject.transform.position.x + " " + hit.collider.gameObject.transform.position.y);
                     var isHod = SearchPathStart(selectBall.transform.position, hit.collider.gameObject.transform.position);
-                    ClearPole99();
+                    //ClearPole99();
                     Debug.Log(isHod);
                 }
             }
@@ -100,7 +107,7 @@ public class Main : MonoBehaviour
         {
             for (int y = 0; y < 9; y++)
             {
-                if (pole[x, y] < 0)
+                if (poleSP[x, y] < 0)
                 {
                     pole[x, y] = 0;
                 }
@@ -110,41 +117,120 @@ public class Main : MonoBehaviour
 
     bool SearchPathStart(Vector2 start, Vector2 finish)
     {
+        int sx = (int)start.x;
+        int sy = (int)start.y;
+        int fx = (int)finish.x;
+        int fy = (int)finish.y;
+
         numPath = 0;
-        path[numPath] = start;
         
-        if (SearchPath(new Vector2(start.x + 1, start.y), finish)) return true;
-        if (SearchPath(new Vector2(start.x - 1, start.y), finish)) return true;
-        if (SearchPath(new Vector2(start.x, start.y + 1), finish)) return true;
-        if (SearchPath(new Vector2(start.x, start.y - 1), finish)) return true;
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                if (pole[i,j]>0)
+                {
+                    poleSP[i, j] = -pole[i, j];                    
+                }
+                else
+                {
+                    poleSP[i, j] = 90;
+                }
+                
+            }
+        }
 
-        return false;
+        SearchPath(sx, sy, fx, fy);
+
+        PathResultat(sx, sy, fx, fy, 100);
+
+        int n = 1;
+        while (path[n]!=null)
+        {
+            Instantiate(metka, path[n], Quaternion.identity);
+            n += 1;
+        }
+
+        return true;
     }
-    
-    bool SearchPath(Vector2 start, Vector2 finish)
+
+    private bool PathResultat(int sx, int sy, int fx, int fy, int step)
     {
-        if (start.x < 0 || start.x > 8 || start.y < 0 || start.y > 8 || pole[(int)start.x, (int)start.y] > 0)
+        int s = step;
+
+        if (poleSP[fx + 1, fy] < s && poleSP[fx + 1, fy] > 0)
         {
-            return false;
+            s = poleSP[fx + 1, fy];
+            path[s] = new Vector2(fx + 1, fy);
         }
 
-        numPath += 1;
-        if ((pole[(int)start.x, (int)start.y]) >= -numPath && (pole[(int)start.x, (int)start.y] != 0))
+        if (poleSP[fx, fy - 1] < s && poleSP[fx, fy - 1] > 0)
         {
-            return false;
+            s = poleSP[fx, fy - 1];
+            path[s] = new Vector2(fx, fy - 1);
         }
-        path[numPath] = start;
-        pole[(int)start.x, (int)start.y] = -numPath;
-        if (start == finish)
+
+        if (poleSP[fx - 1, fy] < s && poleSP[fx - 1, fy] > 0)
+        {
+            s = poleSP[fx - 1, fy];
+            path[s] = new Vector2(fx - 1, fy);
+        }
+
+        if (poleSP[fx, fy + 1] < s && poleSP[fx, fy + 1] > 0)
+        {
+            s = poleSP[fx, fy + 1];
+            path[s] = new Vector2(fx, fy + 1);
+        }
+
+        if (s == 0)
         {
             return true;
         }
-        else
+
+        return PathResultat(sx, sy, (int) path[s].x, (int) path[s].y, s);
+
+    }
+
+    bool SearchPath(int sx, int sy, int fx, int fy)
+    {
+        if (sx < 0 || sx > 8 || sy < 0 || sy > 8)
         {
-            if (SearchPath(new Vector2(start.x + 1, start.y), finish)) return true;
-            if (SearchPath(new Vector2(start.x - 1, start.y), finish)) return true;
-            if (SearchPath(new Vector2(start.x, start.y + 1), finish)) return true;
-            if (SearchPath(new Vector2(start.x, start.y - 1), finish)) return true;
+            return false;
+        }
+
+        // if ((sx == fx) && (sy == fy))
+        // {
+        //     return true;
+        // }
+        
+        numPath += 1;
+        // if ((poleSP[sx, sy]) <= numPath && (poleSP[sx, sy] != 0))
+        // {
+        //     return false;
+        // }
+
+        if (sx < 8 && poleSP[sx + 1, sy] > numPath)
+        {
+            poleSP[sx + 1, sy] = numPath;
+            SearchPath(sx + 1, sy, fx, fy);
+        }
+
+        if (sy > 0 && poleSP[sx, sy - 1] > numPath)
+        {
+            poleSP[sx, sy - 1] = numPath;
+            SearchPath(sx, sy - 1, fx, fy);
+        }
+
+        if (sx > 0 && poleSP[sx - 1, sy] > numPath)
+        {
+            poleSP[sx - 1, sy] = numPath;
+            SearchPath(sx - 1, sy, fx, fy);
+        }
+
+        if (sy < 8 && poleSP[sx, sy + 1] > numPath)
+        {
+            poleSP[sx, sy + 1] = numPath;
+            SearchPath(sx, sy + 1, fx, fy);
         }
 
         numPath -= 1;
