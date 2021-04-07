@@ -15,6 +15,7 @@ public class Main : MonoBehaviour
     private readonly int[,] pole = new int[9, 9];
     private readonly int[,] poleSP = new int[9, 9];
     private readonly Vector2[] path = new Vector2[50];
+    private int kolStep=0;
     private int numPath = 0;
     public InputMain input;
 
@@ -142,10 +143,12 @@ public class Main : MonoBehaviour
 
         SearchPath(sx, sy, fx, fy);
 
+        kolStep = 0;
+        
         PathResultat(sx, sy, fx, fy, 100);
 
-        int n = 1;
-        while (path[n]!=null)
+
+        for (int n = 0; n <= kolStep; n++)
         {
             Instantiate(metka, path[n], Quaternion.identity);
             n += 1;
@@ -154,6 +157,20 @@ public class Main : MonoBehaviour
         return true;
     }
 
+    void PrintPole()
+    {
+        Debug.ClearDeveloperConsole();
+        for (int y = 8; y >= 0; y--)
+        {
+            string s = "";
+            for (int x = 0; x <= 8; x++)
+            {
+                s = s + poleSP[x, y] + " ";
+            }
+            Debug.Log(s);
+        }
+    }
+    
     private bool PathResultat(int sx, int sy, int fx, int fy, int step)
     {
         int s = step;
@@ -182,7 +199,12 @@ public class Main : MonoBehaviour
             path[s] = new Vector2(fx, fy + 1);
         }
 
-        if (s == 0)
+        if (kolStep < s)
+        {
+            kolStep = s;
+        }
+
+        if (s == 1)
         {
             return true;
         }
@@ -198,6 +220,8 @@ public class Main : MonoBehaviour
             return false;
         }
 
+        PrintPole();
+        
         // if ((sx == fx) && (sy == fy))
         // {
         //     return true;
