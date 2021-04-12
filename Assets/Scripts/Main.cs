@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.VFX;
@@ -15,6 +17,8 @@ public class Main : MonoBehaviour
     private readonly int[,] pole = new int[9, 9];
     private readonly int[,] poleSP = new int[9, 9];
     private readonly Vector2[] path = new Vector2[50];
+    private readonly List<GameObject> array=new List<GameObject>(); 
+    private int kolStep=0;
     private int numPath = 0;
     public InputMain input;
 
@@ -117,11 +121,6 @@ public class Main : MonoBehaviour
 
     bool SearchPathStart(Vector2 start, Vector2 finish)
     {
-        int sx = (int)start.x;
-        int sy = (int)start.y;
-        int fx = (int)finish.x;
-        int fy = (int)finish.y;
-
         numPath = 0;
         
         for (int i = 0; i < 9; i++)
@@ -140,101 +139,147 @@ public class Main : MonoBehaviour
             }
         }
 
-        SearchPath(sx, sy, fx, fy);
+        poleSP[(int)start.x, (int)start.y] = 1;
+        poleSP[(int)finish.x, (int)finish.y] = 1000;     
 
-        PathResultat(sx, sy, fx, fy, 100);
+        SearchPath(1);
 
-        int n = 1;
-        while (path[n]!=null)
+        kolStep = 0;
+
+        foreach (var o in array)
         {
-            Instantiate(metka, path[n], Quaternion.identity);
-            n += 1;
+            Destroy(o);
+        }
+        array.Clear();
+        
+        PathResultat((int)finish.x, (int)finish.y, 90);
+        
+        path[kolStep+1]=new Vector2((int)finish.x, (int)finish.y);
+        for (int n = 2; n <= kolStep+1; n++)
+        {
+            array.Add(Instantiate(metka, path[n], Quaternion.identity));
         }
 
         return true;
     }
 
-    private bool PathResultat(int sx, int sy, int fx, int fy, int step)
+    void PrintPole()
+    {
+        Assembly assembly = Assembly.GetAssembly(typeof(SceneView));
+        Type type = assembly.GetType("UnityEditor.LogEntries");
+        MethodInfo method = type.GetMethod("Clear");
+        method.Invoke(new object(), null);
+        
+        for (int y = 8; y >= 0; y--)
+        {
+            string s = "";
+            for (int x = 0; x <= 8; x++)
+            {
+                s = s + poleSP[x, y] + " ";
+            }
+            Debug.Log(s);
+        }
+    }
+
+    private bool PathResultat(int fx, int fy, int step)
     {
         int s = step;
 
-        if (poleSP[fx + 1, fy] < s && poleSP[fx + 1, fy] > 0)
+        if (fx < 8 && poleSP[fx + 1, fy] < s && poleSP[fx + 1, fy] > 0)
         {
             s = poleSP[fx + 1, fy];
             path[s] = new Vector2(fx + 1, fy);
         }
 
-        if (poleSP[fx, fy - 1] < s && poleSP[fx, fy - 1] > 0)
+        if (fy > 0 && poleSP[fx, fy - 1] < s && poleSP[fx, fy - 1] > 0)
         {
             s = poleSP[fx, fy - 1];
             path[s] = new Vector2(fx, fy - 1);
         }
 
-        if (poleSP[fx - 1, fy] < s && poleSP[fx - 1, fy] > 0)
+        if (fx > 0 && poleSP[fx - 1, fy] < s && poleSP[fx - 1, fy] > 0)
         {
             s = poleSP[fx - 1, fy];
             path[s] = new Vector2(fx - 1, fy);
         }
 
-        if (poleSP[fx, fy + 1] < s && poleSP[fx, fy + 1] > 0)
+        if (fy < 8 && poleSP[fx, fy + 1] < s && poleSP[fx, fy + 1] > 0)
         {
             s = poleSP[fx, fy + 1];
             path[s] = new Vector2(fx, fy + 1);
         }
 
-        if (s == 0)
+        if (kolStep < s)
+        {
+            kolStep = s;
+        }
+
+        if (s == 1)
         {
             return true;
         }
 
-        return PathResultat(sx, sy, (int) path[s].x, (int) path[s].y, s);
+        return PathResultat((int) path[s].x, (int) path[s].y, s);
 
     }
 
-    bool SearchPath(int sx, int sy, int fx, int fy)
+    bool SearchPath(int step)
     {
-        if (sx < 0 || sx > 8 || sy < 0 || sy > 8)
-        {
-            return false;
-        }
-
-        // if ((sx == fx) && (sy == fy))
-        // {
-        //     return true;
-        // }
+        PrintPole();
         
-        numPath += 1;
-        // if ((poleSP[sx, sy]) <= numPath && (poleSP[sx, sy] != 0))
-        // {
-        //     return false;
-        // }
-
-        if (sx < 8 && poleSP[sx + 1, sy] > numPath)
+        
+        
+        for (int y = 8; y >= 0; y--)
         {
-            poleSP[sx + 1, sy] = numPath;
-            SearchPath(sx + 1, sy, fx, fy);
+            for (int x = 0; x <= 8; x++)
+            {
+                if (poleSP[x,y]==step)
+                {
+                    if (x < 8 && poleSP[x + 1, y] == 1000)
+                    {
+                        return true;
+                    }
+                    
+                    if (x < 8 && poleSP[x + 1, y] == 90)
+                    {
+                        poleSP[x + 1, y] = step + 1;
+                    }
+                    //////////////////////
+                    if (y > 0 && poleSP[x, y - 1] == 1000)
+                    {
+                        return true;
+                    }
+                    
+                    if (y > 0 && poleSP[x, y - 1] == 90)
+                    {
+                        poleSP[x, y - 1] = step + 1;
+                    }
+                    /////////////////////
+                    if (x > 0 && poleSP[x - 1, y] == 1000)
+                    {
+                        return true;
+                    }
+                    
+                    if (x > 0 && poleSP[x - 1, y] == 90)
+                    {
+                        poleSP[x - 1, y] = step + 1;
+                    }
+                    /////////////////////
+                    if (y < 8 && poleSP[x, y + 1] == 1000)
+                    {
+                        return true;
+                    }
+                    
+                    if (y < 8 && poleSP[x, y + 1] == 90)
+                    {
+                        poleSP[x, y + 1] = step + 1;
+                    }
+                }
+            }
         }
 
-        if (sy > 0 && poleSP[sx, sy - 1] > numPath)
-        {
-            poleSP[sx, sy - 1] = numPath;
-            SearchPath(sx, sy - 1, fx, fy);
-        }
-
-        if (sx > 0 && poleSP[sx - 1, sy] > numPath)
-        {
-            poleSP[sx - 1, sy] = numPath;
-            SearchPath(sx - 1, sy, fx, fy);
-        }
-
-        if (sy < 8 && poleSP[sx, sy + 1] > numPath)
-        {
-            poleSP[sx, sy + 1] = numPath;
-            SearchPath(sx, sy + 1, fx, fy);
-        }
-
-        numPath -= 1;
-        return false;
+        return SearchPath(step + 1);
+        
     }
 
     void StartTable()
