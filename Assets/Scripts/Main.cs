@@ -23,6 +23,7 @@ public class Main : MonoBehaviour
     public InputMain input;
 
     private GameObject selectBall;
+    private Vector3 selectHod;
 
     void Awake()
     {
@@ -61,7 +62,7 @@ public class Main : MonoBehaviour
 
 #if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_EDITOR
 
-        if (Mouse.current.leftButton.ReadValue() != 0)
+        if (Mouse.current.leftButton.wasReleasedThisFrame)
         {
             position = Mouse.current.position.ReadValue();
 
@@ -78,8 +79,8 @@ public class Main : MonoBehaviour
         if (position != null)
         {
             MyRay = Camera.main.ScreenPointToRay(position);
-            Debug.DrawRay(MyRay.origin, MyRay.direction * 21, Color.yellow);
-            if (Physics.Raycast(MyRay.origin, MyRay.direction, out hit, 21))
+            //Debug.DrawRay(MyRay.origin, MyRay.direction * 21, Color.yellow);
+            if (Physics.Raycast(MyRay.origin, MyRay.direction, out hit, 23))
             {
                 if (hit.collider.gameObject.CompareTag("Ball") && hit.collider.gameObject != selectBall)
                 {
@@ -93,13 +94,29 @@ public class Main : MonoBehaviour
                     selectBall = hit.collider.gameObject;
                     var animator = selectBall.GetComponent<Animator>();
                     animator.SetTrigger("Jump");
+                }else if ((selectHod.x == hit.collider.gameObject.transform.position.x) &&
+                          (selectHod.y == hit.collider.gameObject.transform.position.y))
+                {
+                    // Ход
+                    print("Go");
                 }
+                else
+                
                 if (hit.collider.gameObject.CompareTag("Cell") && selectBall!=null)
                 {
+                    // Выбор хода
                     Debug.Log("Куда пойдем " + hit.collider.gameObject.transform.position.x + " " + hit.collider.gameObject.transform.position.y);
                     var isHod = SearchPathStart(selectBall.transform.position, hit.collider.gameObject.transform.position);
-                    //ClearPole99();
-                    Debug.Log(isHod);
+                    if (isHod)
+                    {
+                        selectHod = hit.collider.gameObject.transform.position;
+                    }
+                    else
+                    {
+                        selectHod = Vector3.zero;
+                    }
+                    var animator = selectBall.GetComponent<Animator>();
+                    animator.SetTrigger("JumpingMove");
                 }
             }
         }
@@ -165,10 +182,10 @@ public class Main : MonoBehaviour
 
     void PrintPole()
     {
-        Assembly assembly = Assembly.GetAssembly(typeof(SceneView));
-        Type type = assembly.GetType("UnityEditor.LogEntries");
-        MethodInfo method = type.GetMethod("Clear");
-        method.Invoke(new object(), null);
+        // Assembly assembly = Assembly.GetAssembly(typeof(SceneView));
+        // Type type = assembly.GetType("UnityEditor.LogEntries");
+        // MethodInfo method = type.GetMethod("Clear");
+        // method.Invoke(new object(), null);
         
         for (int y = 8; y >= 0; y--)
         {
@@ -177,7 +194,7 @@ public class Main : MonoBehaviour
             {
                 s = s + poleSP[x, y] + " ";
             }
-            Debug.Log(s);
+            //Debug.Log(s);
         }
     }
 
@@ -291,13 +308,13 @@ public class Main : MonoBehaviour
         {
             x = Random.Range(1, 9);
             y = Random.Range(1, 9);
-            c = Random.Range(0, 4);
+            c = Random.Range(1, 5);
             if (pole[x, y] != 0)
             {
                 i--;
                 continue;
             }
-            var b = Instantiate(ball[c], new Vector3(x , y , 0f), Quaternion.identity);
+            var b = Instantiate(ball[c-1], new Vector3(x , y , 0f), Quaternion.identity);
             pole[x, y] = c;
         }
     }

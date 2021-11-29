@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +16,11 @@ public class ball : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, transform.position.y, -3);
         }
+        
+    }
+
+    private void FixedUpdate()
+    {
         
     }
 
